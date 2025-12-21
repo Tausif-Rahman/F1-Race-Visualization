@@ -18,7 +18,7 @@ class TrackRenderer:
         
         x_range, y_range = xs.max() - xs.min(), ys.max() - ys.min()
         scale = min(650 / x_range if x_range > 0 else 1, 
-                   550 / y_range if y_range > 0 else 1) * 0.55
+                   550 / y_range if y_range > 0 else 1) * 1.0
         
         self.track_cx, self.track_cy = xs.mean(), ys.mean()
         self.track_scale = scale
