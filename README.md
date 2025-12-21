@@ -1,4 +1,4 @@
-# F1 Race Visualizatio
+# F1 Race Visualization
 
 A Python application that visualizes Formula 1 race data in real-time using the FastF1 library and Arcade game engine.
 
