@@ -1,7 +1,11 @@
 import fastf1 as ff1
 import math
+import os
 
-ff1.Cache.enable_cache("cache")
+# Get the parent directory (project root) to access the cache folder
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+cache_path = os.path.join(project_root, "cache")
+ff1.Cache.enable_cache(cache_path)
 
 
 def load_race_data(year, race_num, num_laps=10):
