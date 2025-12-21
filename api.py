@@ -99,5 +99,4 @@ def season_info(year: int):
 if __name__ == '__main__':
     print("Starting F1 Data API server...")
     print("API will be available at http://localhost:3000")
-    print("Example: http://localhost:3000/api/race/2025/1/58")
     app.run(host='127.0.0.1', port=3000, debug=False)
