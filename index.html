@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F1 Race Visualization</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+        
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #e6edf3;
+      background-color: #0d1117;
+      padding: 20px;
+    }
+        
+    .container {
+      max-width: 1012px;
+      margin: 0 auto;
+      padding: 32px;
+      background-color: #0d1117;
+    }
+        
+    h1 {
+      font-size: 32px;
+      font-weight: 600;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #21262d;
+      color: #e6edf3;
+    }
+        
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      padding-bottom: 8px;
+      margin-top: 24px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #21262d;
+      color: #e6edf3;
+    }
+        
+    p {
+      margin-bottom: 16px;
+      color: #c9d1d9;
+    }
+        
+    ul {
+      margin-bottom: 16px;
+      padding-left: 32px;
+    }
+        
+    li {
+      margin-bottom: 8px;
+      color: #c9d1d9;
+    }
+        
+    strong {
+      color: #e6edf3;
+      font-weight: 600;
+    }
+        
+    a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+        
+    a:hover {
+      text-decoration: underline;
+    }
+        
+    code {
+      padding: 0.2em 0.4em;
+      margin: 0;
+      font-size: 85%;
+      background-color: rgba(110, 118, 129, 0.4);
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+      color: #e6edf3;
+    }
+        
+    pre {
+      padding: 16px;
+      overflow: auto;
+      font-size: 85%;
+      line-height: 1.45;
+      background-color: #161b22;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      border: 1px solid #30363d;
+    }
+        
+    pre code {
+      display: block;
+      padding: 0;
+      margin: 0;
+      background-color: transparent;
+      border: 0;
+      font-size: 100%;
+      color: #c9d1d9;
+    }
+        
+    .code-block {
+      position: relative;
+    }
+        
+    .code-header {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      font-size: 12px;
+      color: #7d8590;
+      font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+    }
+        
+    .code-header + pre {
+      border-radius: 0 0 6px 6px;
+      margin-top: 0;
+    }
+        
+    .demo-container {
+      margin: 24px 0;
+      padding: 20px;
+      background-color: #161b22;
+      border-radius: 8px;
+      border: 1px solid #30363d;
+    }
+        
+    .demo-title {
+      text-align: center;
+      color: #7d8590;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+        
+    .visualization-mock {
+      width: 100%;
+      height: 600px;
+      background: linear-gradient(135deg, #141922 0%, #1a1f2e 100%);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #21262d;
+    }
+        
+    #raceCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+        
+    .viz-header {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+    }
+        
+    .viz-race-title {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+        
+    .viz-race-date {
+      color: #b4b8c0;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+        
+    .viz-lap-counter {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(30, 30, 45, 0.95);
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      z-index: 10;
+    }
+        
+    .viz-lap-text {
+      color: #ffff64;
+      font-size: 16px;
+      font-weight: bold;
+    }
+        
+    .viz-progress-bar {
+      width: 140px;
+      height: 6px;
+      background: #3c3c50;
+      border-radius: 3px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+        
+    .viz-progress-fill {
+      height: 100%;
+      background: #ffff64;
+      width: 0%;
+    }
+        
+    .viz-dashboard {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 280px;
+      max-height: 70%;
+      background: rgba(30, 30, 45, 0.95);
+      border-radius: 6px;
+      padding: 16px;
+      border: 1px solid #30363d;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      overflow-y: auto;
+      z-index: 10;
+    }
+        
+    .viz-dashboard-header {
+      text-align: center;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #505060;
+      padding-bottom: 8px;
+    }
+        
+    .viz-position-row {
+      display: flex;
+      align-items: center;
+      padding: 6px 8px;
+      margin-bottom: 4px;
+      border-radius: 4px;
+      background: rgba(60, 60, 80, 0.3);
+    }
+        
+    .viz-position-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #3c3c50;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      margin-right: 8px;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+        
+    .viz-driver-bar {
+      width: 4px;
+      height: 18px;
+      margin-right: 8px;
+      border-radius: 2px;
+    }
+        
+    .viz-driver-info {
+      flex: 1;
+      font-size: 12px;
+      color: #fff;
+      font-weight: 600;
+    }
+        
+    .viz-team-name {
+      font-size: 9px;
+      color: #b4b8c0;
+      font-weight: normal;
+      display: block;
+      margin-top: 2px;
+    }
+        
+    .viz-lap-time {
+      font-size: 10px;
+      color: #ffff64;
+      font-weight: bold;
+    }
+        
+    .viz-controls {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      color: #787888;
+      z-index: 10;
+      background: rgba(20, 25, 34, 0.8);
+      padding: 8px 16px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>F1 Race Visualization</h1>
+    <p>This web visualization is a demo with pre-loaded race datasets. The main application is the Python app which fetches data via the FastF1 API and visualizes races that have happened. This page showcases the visualization using exported JSON and runs entirely on GitHub Pages (no backend needed).</p>
+        
+    <div class="demo-container">
+      <div class="demo-title">Interactive Race Visualization Demo</div>
+      <div class="visualization-mock">
+        <canvas id="raceCanvas"></canvas>
+                
+        <div class="viz-header">
+          <div class="viz-race-title">AUSTRALIAN GRAND PRIX</div>
+          <div class="viz-race-date">March 16, 2025</div>
+        </div>
+                
+        <div class="viz-lap-counter">
+          <div class="viz-lap-text" id="vizLapText">LAP 1/58</div>
+          <div class="viz-progress-bar">
+            <div class="viz-progress-fill" id="vizProgressFill"></div>
+          </div>
+        </div>
+                
+        <div class="viz-dashboard">
+          <div class="viz-dashboard-header">LIVE STANDINGS</div>
+          <div id="vizPositionList"></div>
+        </div>
+                
+        <div class="viz-controls">[SPACE] Pause  [↑/↓] Speed</div>
+      </div>
+    </div>
+        
+    <h2>Getting Started</h2>
+    <p>Clone the repository and preview the static site locally:</p>
+    <div class="code-block">
+      <div class="code-header">bash</div>
+      <pre><code>git clone https://github.com/Tausif-Rahman/F1-Race-Visualization.git
+cd F1-Race-Visualization
+python3 -m http.server 8080
+# Open http://localhost:8080/</code></pre>
+    </div>
+
+    <!-- Static-mode: use pre-exported JSON and shared viz.js -->
+    <script>
+      // Optional: pin a specific dataset; otherwise index.json will be used
+      // window.DATASET = 'static/data/2025_1_Australian_Grand_Prix.json';
+    </script>
+    <script src="static/js/viz.js"></script>
+        
+    <h2>What It Does</h2>
+    <p>This application loads historical F1 race data and creates an animated visualization showing:</p>
+    <ul>
+      <li><strong>Track Layout</strong>: A visual representation of the F1 circuit</li>
+      <li><strong>Driver Positions</strong>: Real-time positions of all drivers on the track during the race</li>
+      <li><strong>Race Dashboard</strong>: Live leaderboard showing driver positions, lap times, and gaps</li>
+      <li><strong>Playback Controls</strong>: Play, pause, and adjust speed of the race replay</li>
+    </ul>
+    <p>The visualization uses actual telemetry data from F1 races to accurately recreate driver positions lap-by-lap.</p>
+        
+    <h2>Requirements</h2>
+    <p><strong>For the web visualization (GitHub Pages)</strong>: just a modern browser. No backend needed.</p>
+    <p><strong>For exporting data / desktop app (optional)</strong>:</p>
+    <ul>
+      <li>Python 3.12+</li>
+      <li>fastf1</li>
+      <li>arcade</li>
+    </ul>
+        
+    <h2>Installation</h2>
+    <div class="code-block">
+      <div class="code-header">bash</div>
+      <pre><code># Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate  # On macOS/Linux
+
+# Install dependencies
+pip install fastf1 arcade</code></pre>
+    </div>
+        
+    <h2>Usage</h2>
+    <p>Run the application from the project root:</p>
+    <div class="code-block">
+      <div class="code-header">bash</div>
+      <pre><code>python3 run.py
+# OR
+python3 -m src</code></pre>
+    </div>
+    <p>The first run will download and cache race data. Subsequent runs will use the cached data.</p>
+        
+    <h2>Controls</h2>
+    <ul>
+      <li><strong>Space</strong>: Play/Pause</li>
+      <li><strong>Up/Down Arrow</strong>: Adjust playback speed</li>
+      <li><strong>Left/Right Arrow</strong>: Skip forward/backward</li>
+      <li><strong>Q</strong>: Quit</li>
+    </ul>
+        
+    <h2>How It Works</h2>
+    <p>This site is fully static, designed for GitHub Pages:</p>
+    <ul>
+      <li><strong>Data Export</strong>: A Python exporter writes race telemetry + lap times to <code>static/data/*.json</code>.</li>
+      <li><strong>Dataset Index</strong>: <code>static/data/index.json</code> lists available datasets and is auto-maintained.</li>
+      <li><strong>Client Visualization</strong>: The browser loads JSON and animates drivers on a canvas with lap progression.</li>
+      <li><strong>No Backend Required</strong>: All data is fetched as static files; no Flask needed in production.</li>
+    </ul>
+
+    <h2>Web Visualization</h2>
+    <p>The front-end logic lives in <code>static/js/viz.js</code>:</p>
+    <ul>
+      <li><strong>Loading</strong>: Tries <code>static/data/index.json</code>; if missing, uses <code>window.DATASET</code> or a default file.</li>
+      <li><strong>Track Rendering</strong>: Builds a scaled track from lap 1 telemetry and draws it with Canvas 2D.</li>
+      <li><strong>Position Calculation</strong>: Aggregates lap times + current lap progress to compute race order.</li>
+      <li><strong>Animation Loop</strong>: Advances progress and currentLap, updates the dashboard and markers.</li>
+      <li><strong>Controls</strong>: Space (pause), Up/Down (speed). Responsive to window resizes.</li>
+    </ul>
+
+    <h2>Exporter & Commands</h2>
+    <p>Use the exporter to generate static datasets from the FastF1 cache:</p>
+    <div class="code-block">
+      <div class="code-header">bash</div>
+      <pre><code># Export Australian GP (Round 1)
+python3 -m src.export_static_json 2025 1
+
+# Export additional rounds (examples)
+python3 -m src.export_static_json 2025 2
+python3 -m src.export_static_json 2025 3
+
+# Start a local static server to preview
+python3 -m http.server 8080
+# Then open http://localhost:8080/
+</code></pre>
+    </div>
+    <p>Outputs are written to <code>static/data/</code> and the index file (<code>index.json</code>) is updated automatically.</p>
+
+    <h2>Repository Overview</h2>
+    <ul>
+      <li><strong>index.html</strong>: This page. Hosts the visualization and documentation.</li>
+      <li><strong>static/js/viz.js</strong>: Canvas renderer and race animation, loads static JSON datasets.</li>
+      <li><strong>static/data/</strong>: Pre-exported datasets and <code>index.json</code> list.</li>
+      <li><strong>src/export_static_json.py</strong>: Exporter producing the static JSON from FastF1 cache.</li>
+      <li><strong>cache/</strong>: FastF1 cache assets (timing, telemetry). Used by the exporter.</li>
+      <li><strong>src/main.py</strong> &amp; <strong>run.py</strong>: Desktop visualization using the Arcade engine.</li>
+      <li><strong>api.py</strong> &amp; <strong>templates/index.html</strong>: Dev-only Flask API + template (not needed for Pages).</li>
+    </ul>       
+    <h2>Data Source</h2>
+    <p>Race data is provided by the <a href="https://github.com/theOehrly/Fast-F1">FastF1</a> library, which accesses official timing data. Datasets are exported locally and served as static files for the web visualization.</p>
+  </div>
+</body>
+</html>

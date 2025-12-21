@@ -2,15 +2,15 @@
   const canvas = document.getElementById('raceCanvas');
   const ctx = canvas.getContext('2d');
 
-  // Same-origin API (served by Flask)
-  const YEAR = 2025;
-  let raceNum = 1;
-  const NUM_LAPS = 58; // server returns actual max laps
-  let seasonMaxRound = 1;
-  let currentRound = 1;
+  // Static-mode configuration for GitHub Pages
+  // If static/data/index.json exists, we'll cycle through listed datasets.
+  // Otherwise, we try window.DATASET or a default sample filename.
+  const DEFAULT_DATASET = 'static/data/2025_1_Australian_Grand_Prix.json';
+  let datasets = [];
+  let datasetIdx = 0;
 
   let drivers = [];
-  let maxLaps = NUM_LAPS;
+  let maxLaps = 1;
   let eventInfo = null;
   let currentLap = 1;
   let progress = 0;
@@ -35,29 +35,34 @@
     ctx.fillText('Loading race data...', canvas.width / 2, canvas.height / 2);
   }
 
-  async function fetchSeasonInfo() {
+  async function loadDatasetIndex() {
     try {
-      const res = await fetch(`/api/season/${YEAR}`);
-      if (!res.ok) throw new Error(`Season API ${res.status}`);
-      const s = await res.json();
-      seasonMaxRound = s.max_round || 1;
-      currentRound = s.current_round || seasonMaxRound;
+      const res = await fetch('static/data/index.json');
+      if (res.ok) {
+        const arr = await res.json();
+        if (Array.isArray(arr) && arr.length > 0) {
+          datasets = arr.map(name => `static/data/${name}`);
+        }
+      }
     } catch (e) {
-      console.warn('Season info failed, defaulting to 1 round', e);
-      seasonMaxRound = 1;
-      currentRound = 1;
+      // No index.json is fine; we'll use default
+    }
+    if (!datasets || datasets.length === 0) {
+      const hint = window.DATASET || DEFAULT_DATASET;
+      datasets = [hint];
     }
   }
 
   async function loadRaceData() {
     try {
       drawLoading();
-      const response = await fetch(`/api/race/${YEAR}/${raceNum}/${NUM_LAPS}`);
-      if (!response.ok) throw new Error(`API returned ${response.status}`);
+      const url = datasets[datasetIdx];
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Data file ${response.status}`);
       const data = await response.json();
-      drivers = data.drivers;
-      maxLaps = data.max_laps;
-      eventInfo = data.event_info;
+      drivers = data.drivers || [];
+      maxLaps = data.max_laps || 1;
+      eventInfo = data.event_info || null;
 
       if (eventInfo) {
         document.querySelector('.viz-race-title').textContent = (eventInfo.name || 'F1 Race').toUpperCase();
@@ -68,13 +73,13 @@
       isLoading = false;
       animate();
     } catch (error) {
-      console.error('Error loading race data:', error);
+      console.error('Error loading static data:', error);
       ctx.fillStyle = '#141922';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#ff4444';
       ctx.font = '16px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Error loading data. Ensure Flask API is running.', canvas.width / 2, canvas.height / 2);
+      ctx.fillText('Error loading static data. Check static/data files.', canvas.width / 2, canvas.height / 2);
     }
   }
 
@@ -223,14 +228,11 @@
         progress = 0; 
         currentLap++; 
         if (currentLap > maxLaps) {
-          // Finished this race; advance to next
+          // Finished this dataset; advance to next
           currentLap = 1;
-          raceNum++;
-          if (raceNum > (currentRound || seasonMaxRound)) {
-            raceNum = 1; // wrap to start of season
-          }
+          datasetIdx = (datasetIdx + 1) % datasets.length;
           isLoading = true;
-          // Load next race data
+          // Load next dataset
           loadRaceData();
           return; // Wait for data to load
         }
@@ -271,7 +273,7 @@
   });
 
   (async () => {
-    await fetchSeasonInfo();
+    await loadDatasetIndex();
     await loadRaceData();
   })();
 })();
