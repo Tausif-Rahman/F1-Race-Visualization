@@ -1,7 +1,7 @@
 import arcade
 import warnings
-from data_loader import load_race_data
-from race_window import RaceWindow
+from .data_loader import load_race_data
+from .race_window import RaceWindow
 
 warnings.filterwarnings('ignore')
 

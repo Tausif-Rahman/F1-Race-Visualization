@@ -1,9 +1,9 @@
 import arcade
-from track_renderer import TrackRenderer
-from driver_renderer import DriverRenderer
-from position_calculator import PositionCalculator
-from dashboard import Dashboard
-from ui_elements import UIElements
+from .track_renderer import TrackRenderer
+from .driver_renderer import DriverRenderer
+from .position_calculator import PositionCalculator
+from .dashboard import Dashboard
+from .ui_elements import UIElements
 
 
 class RaceWindow(arcade.Window):
