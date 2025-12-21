@@ -40,21 +40,6 @@ python3 src/main.py
 
 The first run will download and cache race data. Subsequent runs will use the cached data.
 
-## Project Structure
-
-```
-src/
-  ├── main.py                 # Entry point
-  ├── data_loader.py          # Loads F1 race data using FastF1
-  ├── race_window.py          # Main window and game loop
-  ├── track_renderer.py       # Renders the track layout
-  ├── driver_renderer.py      # Renders driver positions
-  ├── position_calculator.py  # Calculates driver positions
-  ├── dashboard.py            # Race leaderboard display
-  └── ui_elements.py          # UI controls
-cache/                        # Cached race data
-```
-
 ## Controls
 
 - **Space**: Play/Pause
