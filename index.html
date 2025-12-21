@@ -3,58 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>F1 Race Visualization</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #e6edf3; background-color: #0d1117; padding: 20px; }
-    .container { max-width: 1012px; margin: 0 auto; padding: 32px; background-color: #0d1117; }
-    h1 { font-size: 32px; font-weight: 600; padding-bottom: 8px; margin-bottom: 16px; border-bottom: 1px solid #21262d; color: #e6edf3; }
-    .visualization-mock { width: 100%; height: 600px; background: linear-gradient(135deg, #141922 0%, #1a1f2e 100%); border-radius: 6px; position: relative; overflow: hidden; border: 2px solid #21262d; }
-    #raceCanvas { width: 100%; height: 100%; display: block; }
-    .viz-header { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10; }
-    .viz-race-title { color: #fff; font-size: 18px; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-    .viz-race-date { color: #b4b8c0; font-size: 12px; margin-top: 2px; }
-    .viz-lap-counter { position: absolute; top: 20px; right: 20px; background: rgba(30, 30, 45, 0.95); padding: 10px 20px; border-radius: 6px; border: 1px solid #30363d; z-index: 10; }
-    .viz-lap-text { color: #ffff64; font-size: 16px; font-weight: bold; }
-    .viz-progress-bar { width: 140px; height: 6px; background: #3c3c50; border-radius: 3px; margin-top: 6px; overflow: hidden; }
-    .viz-progress-fill { height: 100%; background: #ffff64; width: 0%; }
-    .viz-dashboard { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); width: 280px; max-height: 70%; background: rgba(30, 30, 45, 0.95); border-radius: 6px; padding: 16px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); overflow-y: auto; z-index: 10; }
-    .viz-dashboard-header { text-align: center; color: #fff; font-weight: 600; font-size: 14px; margin-bottom: 12px; border-bottom: 1px solid #505060; padding-bottom: 8px; }
-    .viz-position-row { display: flex; align-items: center; padding: 6px 8px; margin-bottom: 4px; border-radius: 4px; background: rgba(60, 60, 80, 0.3); }
-    .viz-position-num { width: 22px; height: 22px; border-radius: 50%; background: #3c3c50; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; margin-right: 8px; border: 2px solid rgba(255,255,255,0.3); }
-    .viz-driver-bar { width: 4px; height: 18px; margin-right: 8px; border-radius: 2px; }
-    .viz-driver-info { flex: 1; font-size: 12px; color: #fff; font-weight: 600; }
-    .viz-team-name { font-size: 9px; color: #b4b8c0; font-weight: normal; display: block; margin-top: 2px; }
-    .viz-lap-time { font-size: 10px; color: #ffff64; font-weight: bold; }
-    .viz-controls { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #787888; z-index: 10; background: rgba(20, 25, 34, 0.8); padding: 8px 16px; border-radius: 6px; }
-  </style>
+  <title>Redirecting to README</title>
+  <meta http-equiv="refresh" content="0; url=README.html" />
+  <script>
+    window.location.replace('README.html');
+  </script>
 </head>
 <body>
-  <div class="container">
-    <h1>F1 Race Visualization</h1>
-    <div class="visualization-mock">
-      <canvas id="raceCanvas"></canvas>
-      <div class="viz-header">
-        <div class="viz-race-title">F1 RACE</div>
-        <div class="viz-race-date"></div>
-      </div>
-      <div class="viz-lap-counter">
-        <div class="viz-lap-text" id="vizLapText">LAP 1/—</div>
-        <div class="viz-progress-bar">
-          <div id="vizProgressFill" class="viz-progress-fill"></div>
-        </div>
-      </div>
-      <div class="viz-dashboard">
-        <div class="viz-dashboard-header">LIVE STANDINGS</div>
-        <div id="vizPositionList"></div>
-      </div>
-      <div class="viz-controls">[SPACE] Pause  [↑/↓] Speed</div>
-    </div>
-  </div>
-  <!-- Optional: pin a specific dataset; otherwise index.json will be used -->
-  <script>
-    // window.DATASET = 'static/data/2025_1_Australian_Grand_Prix.json';
-  </script>
-  <script src="static/js/viz.js"></script>
+  <p>Redirecting to <a href="README.html">README.html</a>…</p>
 </body>
 </html>
