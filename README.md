@@ -45,6 +45,7 @@ The first run will download and cache race data. Subsequent runs will use the ca
 - **Space**: Play/Pause
 - **Up/Down Arrow**: Adjust playback speed
 - **Left/Right Arrow**: Skip forward/backward
+- **Q**: Quit
 
 ## Data Source
 
