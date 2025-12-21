@@ -1,5 +1,5 @@
 import arcade
-from driver_renderer import DriverRenderer
+from .driver_renderer import DriverRenderer
 
 
 class Dashboard:

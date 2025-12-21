@@ -35,7 +35,8 @@ pip install fastf1 arcade
 Run the application from the project root:
 
 ```bash
-python3 src/main.py
+python3 src/main.py 
+python3 -m src
 ```
 
 The first run will download and cache race data. Subsequent runs will use the cached data.
