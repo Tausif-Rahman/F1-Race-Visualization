@@ -345,7 +345,10 @@
         <div class="code-block">
             <div class="code-header">bash</div>
             <pre><code>git clone https://github.com/Tausif-Rahman/F1-Race-Visualization.git
-         </code></pre>
+cd F1-Race-Visualization
+python3 -m http.server 8000
+# Open http://localhost:8000/
+            </code></pre>
         </div>
 
         <!-- Static-mode: use pre-exported JSON and shared viz.js -->
@@ -396,6 +399,34 @@ python3 -m src</code></pre>
         </div>
         <p>The first run will download and cache race data. Subsequent runs will use the cached data.</p>
 
+        <p><strong>Flask (Local API)</strong>: Serve a webpage from your computer and view API-backed data.</p>
+        <ul>
+            <li><strong>Server</strong>: <code>http://127.0.0.1:3000/</code></li>
+            <li><strong>Homepage</strong>: Renders <code>templates/index.html</code></li>
+            <li><strong>API</strong>: <code>/api/race/&lt;year&gt;/&lt;round&gt;/&lt;num_laps&gt;</code>,
+                <code>/api/season/&lt;year&gt;</code>, <code>/api/health</code></li>
+        </ul>
+        <div class="code-block">
+            <div class="code-header">bash</div>
+            <pre><code># (Optional) use a virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install Flask + FastF1
+pip install flask flask-cors fastf1
+
+# Start the local API + template server
+python3 api.py
+
+# Open the site and test endpoints
+# Home:        http://127.0.0.1:3000/
+# Season API:  http://127.0.0.1:3000/api/season/2025
+# Health:      http://127.0.0.1:3000/api/health</code></pre>
+        </div>
+        <p>When running Flask, the homepage comes from the template in <code>templates/index.html</code> and data is
+            fetched from the local endpoints in <code>api.py</code>. For GitHub Pages hosting, this
+            <code>index.html</code> remains purely static.</p>
+
         <h2>Controls</h2>
         <ul>
             <li><strong>Space</strong>: Play/Pause</li>
@@ -408,7 +439,8 @@ python3 -m src</code></pre>
         <p>This site is fully static, designed for GitHub Pages:</p>
         <ul>
             <li><strong>Data Export</strong>: A Python exporter writes race telemetry + lap times to
-                <code>static/data/*.json</code>.</li>
+                <code>static/data/*.json</code>.
+            </li>
             <li><strong>Dataset Index</strong>: <code>static/data/index.json</code> lists available datasets and is
                 auto-maintained.</li>
             <li><strong>Client Visualization</strong>: The browser loads JSON and animates drivers on a canvas with lap
@@ -421,7 +453,8 @@ python3 -m src</code></pre>
         <p>The front-end logic lives in <code>static/js/viz.js</code>:</p>
         <ul>
             <li><strong>Loading</strong>: Tries <code>static/data/index.json</code>; if missing, uses
-                <code>window.DATASET</code> or a default file.</li>
+                <code>window.DATASET</code> or a default file.
+            </li>
             <li><strong>Track Rendering</strong>: Builds a scaled track from lap 1 telemetry and draws it with Canvas
                 2D.</li>
             <li><strong>Position Calculation</strong>: Aggregates lap times + current lap progress to compute race
@@ -450,31 +483,6 @@ python3 -m http.server 8080
         <p>Outputs are written to <code>static/data/</code> and the index file (<code>index.json</code>) is updated
             automatically.</p>
 
-        <h2>Run with Flask (Local API)</h2>
-        <p>To open a webpage that uses your computer as a server and view live FastF1 API data, run the Flask app. This serves a template-backed page and JSON endpoints locally; GitHub Pages remains static-only.</p>
-        <ul>
-            <li><strong>Server</strong>: <code>http://127.0.0.1:3000/</code></li>
-            <li><strong>Homepage</strong>: Renders <code>templates/index.html</code></li>
-            <li><strong>API</strong>: <code>/api/race/&lt;year&gt;/&lt;round&gt;/&lt;num_laps&gt;</code>, <code>/api/season/&lt;year&gt;</code>, <code>/api/health</code></li>
-        </ul>
-        <div class="code-block">
-            <div class="code-header">bash</div>
-            <pre><code># (Optional) use a virtual environment
-python3 -m venv .venv
-source .venv/bin/activate
-
-# Install Flask + FastF1
-pip install flask flask-cors fastf1
-
-# Start the local API + template server
-python3 api.py
-
-# Open the site and test endpoints
-# Home:        http://127.0.0.1:3000/
-# Season API:  http://127.0.0.1:3000/api/season/2025
-# Health:      http://127.0.0.1:3000/api/health</code></pre>
-        </div>
-        <p>When running Flask, the homepage comes from the template in <code>templates/index.html</code> and data is fetched from the local endpoints in <code>api.py</code>. For GitHub Pages hosting, this <code>index.html</code> remains purely static.</p>
 
         <h2>Repository Overview</h2>
         <ul>
@@ -485,13 +493,10 @@ python3 api.py
             <li><strong>cache/</strong>: FastF1 cache assets (timing, telemetry). Used by the exporter.</li>
             <li><strong>src/main.py</strong> &amp; <strong>run.py</strong>: Desktop visualization using the Arcade
                 engine.</li>
-            <li><strong>api.py</strong> &amp; <strong>templates/index.html</strong>: Dev-only Flask API + template (not
-                needed for Pages).</li>
+            <li><strong>api.py</strong> &amp; <strong>templates/index.html</strong>: Dev-only Flask API + template</li>
         </ul>
         <h2>Data Source</h2>
-        <p>Race data is provided by the <a href="https://github.com/theOehrly/Fast-F1">FastF1</a> library, which
-            accesses official timing data. Datasets are exported locally and served as static files for the web
-            visualization.</p>
+        <p>Race data is provided by the <a href="https://github.com/theOehrly/Fast-F1">FastF1</a> library, which accesses official timing data. Datasets are exported locally and served as static files for the web visualization.</p>
     </div>
 </body>
 
