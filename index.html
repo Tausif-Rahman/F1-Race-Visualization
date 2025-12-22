@@ -371,7 +371,7 @@ python3 -m http.server 8000
 
         <h2>Requirements</h2>
         <p><strong>For the web visualization (GitHub Pages)</strong>: just a modern browser. No backend needed.</p>
-        <p><strong>For exporting data / desktop app (optional)</strong>:</p>
+        <p><strong>For exporting data / desktop app </strong>:</p>
         <ul>
             <li>Python 3.12+</li>
             <li>fastf1</li>
@@ -385,8 +385,8 @@ python3 -m http.server 8000
 python3 -m venv .venv
 source .venv/bin/activate  # On macOS/Linux
 
-# Install dependencies
-pip install fastf1 arcade</code></pre>
+    # Install project dependencies
+    pip install -r requirements.txt</code></pre>
         </div>
 
         <h2>Usage</h2>
@@ -421,8 +421,8 @@ python3 -m src</code></pre>
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Install Flask + FastF1
-pip install flask flask-cors fastf1
+# Install project dependencies
+pip install -r requirements.txt
 
 # Start the local API + template server
 python3 api.py
