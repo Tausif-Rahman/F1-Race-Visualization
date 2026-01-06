@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+src/fastf1_viz.egg-info/PKG-INFO
+src/fastf1_viz.egg-info/SOURCES.txt
+src/fastf1_viz.egg-info/dependency_links.txt
+src/fastf1_viz.egg-info/entry_points.txt
+src/fastf1_viz.egg-info/requires.txt
+src/fastf1_viz.egg-info/top_level.txt

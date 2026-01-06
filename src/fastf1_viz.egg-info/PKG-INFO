@@ -1,3 +1,21 @@
+Metadata-Version: 2.4
+Name: fastf1-viz
+Version: 0.1.0
+Summary: F1 race visualization tools (arcade-based UI).
+Author: Your Name
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/your-org/your-repo
+Project-URL: Issues, https://github.com/your-org/your-repo/issues
+Keywords: F1,visualization,fastf1,arcade
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: fastf1
+Requires-Dist: flask
+Requires-Dist: flask-cors
+Requires-Dist: arcade
+
 # F1 Race Visualization
 
 A Python application that visualizes Formula 1 race data using the FastF1 library and the Arcade game engine. The repo also includes a static, browser-based visualization powered by pre-exported JSON datasets for easy hosting (e.g., GitHub Pages).

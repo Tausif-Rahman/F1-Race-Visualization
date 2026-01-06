@@ -1,0 +1,2 @@
+[console_scripts]
+fastf1-viz = src.main:main

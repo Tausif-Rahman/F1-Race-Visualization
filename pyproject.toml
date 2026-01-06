@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fastf1-viz"
+version = "0.1.0"
+description = "F1 race visualization tools (arcade-based UI)."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Your Name" }]
+license = "MIT"
+keywords = ["F1", "visualization", "fastf1", "arcade"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+]
+
+# Sync with requirements.txt for runtime deps
+dependencies = [
+  "fastf1",
+  "flask",
+  "flask-cors",
+  "arcade",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/your-repo"
+Issues = "https://github.com/your-org/your-repo/issues"
+
+[project.scripts]
+fastf1-viz = "src.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"

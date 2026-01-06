@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install build + lint tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build flake8
+          # optional: install runtime deps if import checks are needed
+          python -m pip install -r requirements.txt || true
+      - name: Lint (flake8)
+        run: |
+          flake8 src || true
+      - name: Build sdist + wheel
+        run: |
+          python -m build
